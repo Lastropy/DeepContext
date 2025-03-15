@@ -1,6 +1,6 @@
 from tqdm import tqdm
 from langchain_community.vectorstores import FAISS
-from deepcontext import embedding_model
+from deepcontext.common.embedding_model import embedding_model
 
 def create_vectordb(chunks, vector_database_directory):
     vectordb = None

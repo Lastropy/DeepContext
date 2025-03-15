@@ -12,12 +12,9 @@ class IngestionOrchestratorService:
             update_directory(databases_directory)
             update_directory(vector_database_directory)
             pdf_file_objects = [obj for obj in request.files.values()]
-            print(pdf_file_objects)
             persist_files_in_directory(pdf_file_objects, save_documents_directory)
             pdf_paths = [save_documents_directory + file_object.filename for file_object in pdf_file_objects]
-            print(pdf_paths)
             chunks = create_chunks(pdf_paths)
-            print(chunks[0:3])
             return Response(create_vectordb(chunks, vector_database_directory), mimetype="text/event-stream")
         except Exception as e:
             print("Error in IngestionOrchestratorService's start_ingestion", str(e))
