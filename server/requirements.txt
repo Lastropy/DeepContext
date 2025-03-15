@@ -1,0 +1,12 @@
+langchain-huggingface==0.1.2
+langchain-community==0.3.19
+PyMuPDF==1.25.3
+faiss-cpu==1.10.0
+openai==1.66.3
+textstat==0.7.5
+textstat 
+nltk 
+spacy
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
+language-tool-python==2.9.0
+Flask==3.1.0

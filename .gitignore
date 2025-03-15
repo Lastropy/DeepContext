@@ -1,0 +1,5 @@
+/client/node_modules/*
+/client/*
+/server/docs
+/server/databases/
+/server/src/__pycache__
