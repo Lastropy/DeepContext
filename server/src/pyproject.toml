@@ -1,0 +1,9 @@
+[project]
+name = "deepcontext"
+version="1.0.0"
+description="This is a REST API for PDF Documents' Ingestion, Indexing, Semantic Retrieval and Contextual Summarization."
+dependencies = []
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"

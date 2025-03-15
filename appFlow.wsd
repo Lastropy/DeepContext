@@ -11,8 +11,8 @@ collections documents
 User -> WebAppUI ++: Requests New Vector Database Generation
 User -> WebAppUI: Uploads PDFs
 WebAppUI -> FlaskApp ++: New Vector Database Generation Request
-FlaskApp -> documents: Cleares Documents Folder Contents
-FlaskApp -> documents: Add new Documents in folder
+FlaskApp -> documents: Cleares documents folder contents
+FlaskApp -> documents: Persist documents in folder
 FlaskApp -> CacheDatabase: Clear Cached Results
 FlaskApp -> FAISSVectorDatabase: Clear Vector Database
 FlaskApp -> FlaskApp: Generates new FAISS Vector Database
@@ -25,6 +25,10 @@ User -> WebAppUI ++: Enters search query
 WebAppUI -> FlaskApp ++: Semantic Search Request
 FlaskApp -> CacheDatabase: Check if query results already in cache
 alt Query not cached
+    FlaskApp -> FlaskApp: Check if FAISS Database exists
+    alt FAISS database does not exist
+        FlaskApp --> WebAppUI: Return Database does not exist error
+    end
     FlaskApp -> FlaskApp: Embed Query using Embeddings Model
     FlaskApp -> FAISSVectorDatabase ++: Search Documents using Embedded Query
     FAISSVectorDatabase --> FlaskApp --: Return Semantically Similar Passage (if found)

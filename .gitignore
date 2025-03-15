@@ -3,3 +3,12 @@
 /server/docs
 /server/databases/
 /server/src/__pycache__
+
+.venv/
+
+*.pyc
+/server/instance/
+
+/server/dist/
+/server/build/
+*.egg-info/
