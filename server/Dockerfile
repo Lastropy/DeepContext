@@ -5,8 +5,11 @@ FROM python:3.11-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
+RUN apt-get update && apt-get install -y default-jdk-headless && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory
-WORKDIR /app
+WORKDIR /DeepContext
+WORKDIR /DeepContext/server
 
 # Copy only requirements.txt first for efficient caching
 COPY requirements.txt ./
@@ -16,11 +19,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . . 
 
 # Install the application in editable mode
-WORKDIR /app/src
+WORKDIR /DeepContext/server/src
 RUN pip install --no-cache-dir -e .
+
+WORKDIR /DeepContext
 
 # Expose Flask default port
 EXPOSE 5000
 
 # Command to run the Flask app with Gunicorn
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "deepcontext.api.main:app"]
+CMD ["flask", "--app", "deepcontext", "run", "--host=0.0.0.0", "--port=5000"]
