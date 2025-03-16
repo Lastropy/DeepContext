@@ -3,7 +3,6 @@ actor User
 Participant WebAppUI
 Participant FlaskApp
 Participant LLM
-Database CacheDatabase 
 Database FAISSVectorDatabase
 collections documents
 
@@ -11,9 +10,8 @@ collections documents
 User -> WebAppUI ++: Requests New Vector Database Generation
 User -> WebAppUI: Uploads PDFs
 WebAppUI -> FlaskApp ++: New Vector Database Generation Request
-FlaskApp -> documents: Cleares documents folder contents
+FlaskApp -> documents: Clear documents folder contents
 FlaskApp -> documents: Persist documents in folder
-FlaskApp -> CacheDatabase: Clear Cached Results
 FlaskApp -> FAISSVectorDatabase: Clear Vector Database
 FlaskApp -> FlaskApp: Generates new FAISS Vector Database
 FlaskApp -> FAISSVectorDatabase: Persist FAISS Database (in filesystem)
@@ -23,43 +21,32 @@ WebAppUI --> User --: Show Vector Database Generation Status
 == Semantic Search & Contextual Summarization ==
 User -> WebAppUI ++: Enters search query
 WebAppUI -> FlaskApp ++: Semantic Search Request
-FlaskApp -> CacheDatabase: Check if query results already in cache
-alt Query not cached
-    FlaskApp -> FlaskApp: Check if FAISS Database exists
-    alt FAISS database does not exist
-        FlaskApp --> WebAppUI: Return Database does not exist error
-    end
-    FlaskApp -> FlaskApp: Embed Query using Embeddings Model
-    FlaskApp -> FAISSVectorDatabase ++: Search Documents using Embedded Query
-    FAISSVectorDatabase --> FlaskApp --: Return Semantically Similar Passage (if found)
-    alt Passage retrieved
-        FlaskApp -> FlaskApp: Find if retrieved passage is "unclear", using NLP
-        FlaskApp -> FlaskApp: Find if retrieved passage is "too long"
-        alt Retrieved Passage is unclear and too long
-            FlaskApp -> FlaskApp: Divide Passage into smaller chunks
-            loop for each chunk
-                FlaskApp -> LLM ++: Rephrase and Summarize Passage Request
-                LLM --> FlaskApp: Rephrase and Summarize Passage Response
-            end
-        else Retrieved Passage is clear but too long 
-            FlaskApp -> FlaskApp: Divide Passage into smaller chunks
-            loop for each chunk
-                FlaskApp -> LLM: Summarize Passage Request
-                LLM --> FlaskApp: Summarize Passage Response
-            end
-        else Retrieved Passage is unclear but short 
-            FlaskApp -> LLM : Rephrase Passage Request
-            LLM --> FlaskApp --: Rephrase Passage Response
+FlaskApp -> FlaskApp: Check if FAISS Database exists
+alt FAISS database does not exist
+    FlaskApp --> WebAppUI: Return Database does not exist error
+end
+FlaskApp -> FAISSVectorDatabase ++: Search Vector Database using Query
+FAISSVectorDatabase --> FlaskApp --: Return Semantically Similar Passage (if found)
+alt Passage retrieved
+    FlaskApp -> FlaskApp: Find if retrieved passage is "unclear", using NLP
+    alt Retrieved Passage is unclear
+        FlaskApp -> FlaskApp: Divide Passage into smaller chunks
+        loop for each chunk
+            FlaskApp -> LLM ++: Rephrase Passage LLM Request
+            LLM --> FlaskApp --: Rephrase Passage LLM Response
         end
-        FlaskApp --> WebAppUI: Return Semantic Search Response 
-    else Passage not found
-        FlaskApp --> WebAppUI: Return LLM Generated Summary
     end
-    FlaskApp -> CacheDatabase: Cache Search Results
-else Query Cached 
-    FlaskApp -> CacheDatabase ++: Fetch Query Search Results from Cache
-    CacheDatabase --> FlaskApp --: Passages Retrieved from Cache
-    FlaskApp --> WebAppUI --: Return Cached Results
+    FlaskApp -> FlaskApp: Find if passage is "too long"
+    alt Passage is too long 
+        FlaskApp -> FlaskApp: Divide Passage into smaller chunks
+        loop for each chunk
+            FlaskApp -> LLM ++: Summarize Passage LLM Request
+            LLM --> FlaskApp --: Summarize Passage Response
+        end
+    end
+    FlaskApp --> WebAppUI --: Return Semantic Search Response 
+else Passage not found
+    FlaskApp --> WebAppUI: Return Generic Response
 end
 WebAppUI --> User --: Show Semantic Search Results
 @enduml

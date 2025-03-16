@@ -1,21 +1,23 @@
-from deepcontext.helpers.filesystem import update_directory, persist_files_in_directory
-from deepcontext.helpers.chunk import create_chunks
-from deepcontext.helpers.vectordb import create_vectordb
-import os
+from deepcontext.utils.filesystem import FileUtils
+from deepcontext.utils.chunk import ChunkUtils
+from deepcontext.providers.vectordb import VectorDatabaseProvider
+from deepcontext.providers.config import ConfigProvider
 from flask import request, Response
-
 class IngestionOrchestratorService:
     def start_ingestion():
         try:
-            save_documents_directory,databases_directory, vector_database_directory = os.environ["PDF_FILE_DIRECTORY"], os.environ["DATABASES_DIRECTORY"], os.environ["FAISS_DATABASE_DIRECTORY"]
-            update_directory(save_documents_directory)
-            update_directory(databases_directory)
-            update_directory(vector_database_directory)
+            print("Starting new Ingestion process..")
+            pdf_file_directory = ConfigProvider.get("PDF_FILE_DIRECTORY")
+            VectorDatabaseProvider.delete_vectordb()
+            FileUtils.format_directory(ConfigProvider.get("PDF_FILE_DIRECTORY"))
+            print("Cleared PDF and DB folders")
             pdf_file_objects = [obj for obj in request.files.values()]
-            persist_files_in_directory(pdf_file_objects, save_documents_directory)
-            pdf_paths = [save_documents_directory + file_object.filename for file_object in pdf_file_objects]
-            chunks = create_chunks(pdf_paths)
-            return Response(create_vectordb(chunks, vector_database_directory), mimetype="text/event-stream")
+            FileUtils.persist_files_in_directory(pdf_file_objects, pdf_file_directory)
+            print("Saved PDFs in folder")
+            pdf_paths = [pdf_file_directory + file_object.filename for file_object in pdf_file_objects]
+            chunks = ChunkUtils.create_chunks(pdf_paths)
+            print("Generated Paragraph Chunks from PDFs")
+            return Response(VectorDatabaseProvider.create_vectordb(chunks), mimetype="text/event-stream")
         except Exception as e:
             print("Error in IngestionOrchestratorService's start_ingestion", str(e))
             raise e
