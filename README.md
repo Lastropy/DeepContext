@@ -59,8 +59,7 @@ Organizations typically deal with a large number of documents (PDFs), and they w
 3. If the retrieved paragraph is `unclear`, the API will do an LLM call to rephrase the paragraph.
 4. If the paragraph is `length`, the API will do an LLM call to summarize the paragraph.
 5. The `summary_length` will be one of the parameters given to search endpoint, in-case the retrieved paragraph is to be summarized.
-6. Edge-Cases -  
-   6.1 What if the paragraph to be sent to LLM for rephrasing/summarization is too long?  
+6. Edge-Cases - What if the paragraph to be sent to LLM for rephrasing/summarization is too long?  
    To handle this case, we will iteratively divide the paragraph into chunks of certain size, with some sentences overlap between them. In each LLM call, we will ask the LLM to consider the previous response and do the task for the current chunk. At the end, we will join the individual responses to get a collective response. To specify `chunk_size` and `sentences_overlap`, a file is provided in the `constants` folder.
 
 7. A file in `constants` folder has been provided to dynamically provide values for -  
@@ -103,6 +102,11 @@ To start, we will be needing -
 
 ### Running the API without Installation (Using Docker)
 
+- Make an account on OpenRouter and generate an API key.
+- Navigate to `config` folder insider server and add this -
+     ```sh
+     LLM_SECRET_KEY="**your-api-key**"
+     ```
 - There is a dockerfile present inside the `server` folder.
 - Navigate inside `server` folder.
 - Generate a Docker Image using -
