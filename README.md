@@ -118,8 +118,6 @@ To start, we will be needing -
 
 ### Running the API using Installation
 
-To start, we will be needing -
-
 - Navigate to `server` folder and run -
      ```sh
      pip install -r requirements.txt
@@ -152,5 +150,5 @@ Don't forget to give the project a star! Thanks again!
 
 Shivam Shukla -
 Email: shuklshiva@gmail.com
-LinkedIn:
+[https://www.linkedin.com/in/lastropy](LinkedIn)
 Project Link: [https://github.com/lastropy/DeepContext](https://github.com/lastropy/DeepContext)
