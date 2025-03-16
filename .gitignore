@@ -12,3 +12,4 @@
 /server/dist/
 /server/build/
 *.egg-info/
+*.tar
