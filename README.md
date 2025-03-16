@@ -53,20 +53,20 @@ Organizations typically deal with a large number of documents (PDFs), and they w
 ### Solution
 
 1. The solution will be implemented using an API.
-2. There will be 2 endpoints in the API -
-   2.1 `/ingestion` endpoint - used to upload PDFs and create a new `FAISS` Vector Database.
+2. There will be 2 endpoints in the API -  
+   2.1 `/ingestion` endpoint - used to upload PDFs and create a new `FAISS` Vector Database.  
    2.2 `/search` endpoint -used to query text and bring up relevant paragraphs.
 3. If the retrieved paragraph is `unclear`, the API will do an LLM call to rephrase the paragraph.
 4. If the paragraph is `length`, the API will do an LLM call to summarize the paragraph.
 5. The `summary_length` will be one of the parameters given to search endpoint, in-case the retrieved paragraph is to be summarized.
-6. Edge-Cases -
-   6.1 What if the paragraph to be sent to LLM for rephrasing/summarization is too long?
+6. Edge-Cases -  
+   6.1 What if the paragraph to be sent to LLM for rephrasing/summarization is too long?  
    To handle this case, we will iteratively divide the paragraph into chunks of certain size, with some sentences overlap between them. In each LLM call, we will ask the LLM to consider the previous response and do the task for the current chunk. At the end, we will join the individual responses to get a collective response. To specify `chunk_size` and `sentences_overlap`, a file is provided in the `constants` folder.
 
-7. A file in `constants` folder has been provided to dynamically provide values for -
-   Minimum Threshold score for relevant passage,
-   Generic message to be given out when no relevant passage is found,
-   Minimum length of paragraph for it to be considered for summarization,
+7. A file in `constants` folder has been provided to dynamically provide values for -  
+   Minimum Threshold score for relevant passage,  
+   Generic message to be given out when no relevant passage is found,  
+   Minimum length of paragraph for it to be considered for summarization,  
    Maximum size content to be sent to LLM etc
 
 ### Sequence Flow Diagram
