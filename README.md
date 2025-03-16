@@ -24,8 +24,8 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#docker">Running the API without Installation (Using Docker)</a></li>
-        <li><a href="#installation">Running the API using Installation</a></li>
+       <li><a href="#running-the-api-without-installation-using-docker">Running the API without Installation (Using Docker)</a></li>
+        <li><a href="#running-the-api-using-installation">Running the API using Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -135,8 +135,8 @@ To start, we will be needing -
      ```
 - Now, to run the app -
   `sh
-  flask --app deepcontext run
-  `
+flask --app deepcontext run
+`
 - Voila! Now the API is running on port `5000`
 - The PostMan Collection provided inside the `tests` folder can be used to test the API.
 
