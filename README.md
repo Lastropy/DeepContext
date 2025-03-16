@@ -149,6 +149,7 @@ Don't forget to give the project a star! Thanks again!
 ## Contact
 
 Shivam Shukla -
-Email: shuklshiva@gmail.com
-[https://www.linkedin.com/in/lastropy](LinkedIn)
-Project Link: [https://github.com/lastropy/DeepContext](https://github.com/lastropy/DeepContext)
+
+- [Email](mailto:shuklshiva@gmail.com)
+- [LinkedIn](https://www.linkedin.com/in/lastropy)
+- Project Link: [https://github.com/lastropy/DeepContext](https://github.com/lastropy/DeepContext)
