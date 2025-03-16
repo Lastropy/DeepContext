@@ -48,6 +48,40 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Passage By Query",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"Google\",\r\n    \"summary_length\": \"small\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/search",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"search"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
